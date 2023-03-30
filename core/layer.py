@@ -8,6 +8,7 @@ from initializer import normal_init
 class Layer(object):
     def __init__(self, name):
         self.name = name
+        # params初始化获取，grads反向传播获取
         self.params, self.grads = None, None
 
     def forward(self, inputs):
@@ -17,7 +18,7 @@ class Layer(object):
         raise NotImplementedError
 
 
-'''
+"""
 全连接层：
 forward
 k -> k+1层
@@ -28,7 +29,7 @@ backward
 k+1 -> k层:
 对W导数：X(k).T * grad(X(k+1)), (num_inputs * batch_size) * (batch_size * num_outputs)
 对b导数: grad(X(k+1)), 1 * num_outputs
-'''
+"""
 
 
 class Dense(Layer):
@@ -39,7 +40,7 @@ class Dense(Layer):
 
         self.params = {
             "w": w_init((num_in, num_out)),
-            "b": b_init((1, num_out))
+            "b": b_init((1, num_out)).reshape(-1)
         }
 
         self.inputs = None
@@ -93,5 +94,9 @@ class ReLU(Activation):
 
 
 if __name__ == '__main__':
-    a = Activation("ll").name
-    print(a)
+    dense = Dense(12, 36)
+    print(dense.params, dense.grads)
+
+    x = np.random.normal(0, 1, (3, 3))
+    relu = ReLU().func(x)
+    print(relu)

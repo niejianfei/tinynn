@@ -16,3 +16,4 @@ if __name__ == '__main__':
     init = zeros_init
     print(init)
     print(type(init))
+    print(init(shape1))
